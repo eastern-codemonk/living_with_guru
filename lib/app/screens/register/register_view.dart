@@ -58,6 +58,13 @@ class _RegisterPageView extends ViewState<RegisterPage, RegisterController> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
+                child: PlatformText('Password'),
+              ),
+              PlatformTextField(
+                controller: controller.password,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: PlatformButton(
                   onPressed: () => controller.register(),
                   child: Text('Register'),

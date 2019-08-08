@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "875835591778",
+    "firebase_url": "https://living-with-guru-test.firebaseio.com",
+    "project_id": "living-with-guru-test",
+    "storage_bucket": "living-with-guru-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:875835591778:android:3a4da714458cc8d1",
+        "android_client_info": {
+          "package_name": "com.example.living_with_guru"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "875835591778-u7c1uodrsat94cf2haqgorbfgapi982r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCN8ihmKRVproANiNSLiYb2sduFVRLV7DQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "875835591778-u7c1uodrsat94cf2haqgorbfgapi982r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:875835591778:android:4ae627cd40586441",
+        "android_client_info": {
+          "package_name": "com.nathakendra.livingwithmaster"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "875835591778-u7c1uodrsat94cf2haqgorbfgapi982r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCN8ihmKRVproANiNSLiYb2sduFVRLV7DQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "875835591778-u7c1uodrsat94cf2haqgorbfgapi982r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

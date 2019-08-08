@@ -18,6 +18,7 @@ class RegisterController extends Controller {
       : _registerPresenter = RegisterPresenter(authRepo) {
     fullName = TextEditingController();
     email = TextEditingController();
+    phone = TextEditingController();
     password = TextEditingController();
     confirmedPassword = TextEditingController();
     agreedToTOS = false;

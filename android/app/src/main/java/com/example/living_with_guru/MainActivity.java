@@ -1,4 +1,4 @@
-package com.example.living_with_guru;
+package com.nathakendra.livingwithmaster;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

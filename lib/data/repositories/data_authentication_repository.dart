@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:living_with_guru/data/utils/constants.dart';
+import 'package:living_with_guru/data/utils/firestore_helper.dart';
 import 'package:living_with_guru/data/utils/http_helper.dart';
 import 'package:living_with_guru/domain/entities/user.dart';
 import 'package:living_with_guru/domain/repositories/authentication_repositary.dart';
@@ -33,7 +34,8 @@ class DataAuthenticationRepository implements AuthenticationRepository {
   Future<void> register({@required String fullName, @required String email,
          @required String phone, @required String password}) async {
     try {
-      await HttpHelper.invokeHttp(Constants.usersRoute, RequestType.post, body: {
+      await FirestoreHelper.addRecord('users', 
+       {
         'fullName': fullName,
         'email': email,
         'phone' : phone,

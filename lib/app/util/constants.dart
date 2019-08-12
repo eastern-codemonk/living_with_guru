@@ -15,6 +15,9 @@ class Strings {
   static const String registrationSuccessful = 'Registration Successful!';
   static const String forgotEmailSent = 'Check your email for reset instructions.';
   static const String forgotPwInstructions = 'Enter the email address associated with the forgotten account. Further instructions will be sent the account email.';
+
+  static const String loginSuccess = 'Login Sucessfull';
+  static const String loginFailed = 'Invalid email address or passwrod';
 }
 
 

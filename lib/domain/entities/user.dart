@@ -13,6 +13,8 @@ class User {
   /// The user's phone number.
   final String phone;
 
+  User(this.fullName, this.uid, this.email, this.phone);
+
   User.fromUser(User user)
       : fullName = user.fullName,
         uid = user.uid,

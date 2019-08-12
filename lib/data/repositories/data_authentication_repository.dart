@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:living_with_guru/data/utils/constants.dart';
 import 'package:living_with_guru/data/utils/firestore_helper.dart';
@@ -57,17 +58,25 @@ class DataAuthenticationRepository implements AuthenticationRepository {
   Future<void> authenticate({@required String email, @required String password}) async {
     try {
       // invoke http request to login and convert body to map
-      Map<String, dynamic> body = await HttpHelper.invokeHttp(
-        Constants.loginRoute, RequestType.post, body: {'email': email, 'password': password});
+      FirebaseUser firebaseUser = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email, password: password);
+        //await HttpHelper.invokeHttp(
+        //Constants.loginRoute, RequestType.post, body: {'email': email, 'password': password});
       _logger.finest('Login Successful.');
 
       // convert json to User and save credentials in local storage
-      User user = User.fromJson(body['user']);
-      _saveCredentials(token: body['token'], user: user);
+      User user = User(
+        firebaseUser.displayName,
+        firebaseUser.uid,
+        firebaseUser.email,
+        firebaseUser.phoneNumber,
+      );
+
+      _saveCredentials(token: firebaseUser.uid, user: user);
    
     } catch(error) {
-      _logger.warning(error.message);
-      rethrow;
+        _logger.warning(error.message);
+        rethrow;
     }
   }
 

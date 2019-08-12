@@ -1,9 +1,6 @@
 // Shady Boukhary
 
 
-import 'dart:convert';
-
-import 'package:living_with_guru/domain/entities/eventdetail.dart';
 import 'package:living_with_guru/domain/util/constants.dart';
 
 /// An HHH event. The event could either be a regular event of a race, in which case

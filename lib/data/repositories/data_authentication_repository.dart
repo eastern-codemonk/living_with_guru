@@ -1,8 +1,8 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:living_with_guru/data/utils/constants.dart';
-import 'package:living_with_guru/data/utils/firestore_helper.dart';
 import 'package:living_with_guru/data/utils/http_helper.dart';
 import 'package:living_with_guru/domain/entities/user.dart';
 import 'package:living_with_guru/domain/repositories/authentication_repositary.dart';
@@ -19,28 +19,40 @@ class DataAuthenticationRepository implements AuthenticationRepository {
   static DataAuthenticationRepository _instance =
       DataAuthenticationRepository._internal();
   Logger _logger;
+  FirebaseAuth _firebaseAuth;
+  Firestore _firestore;
 
   // Constructors
   DataAuthenticationRepository._internal() {
     _logger = Logger('DataAuthenticationRepository');
+    _firebaseAuth = FirebaseAuth.instance;
+    _firestore = Firestore.instance;
   }
 
   factory DataAuthenticationRepository() => _instance;
 
   // AuthenticationRepository Methods
 
-  /// Registers a `User` using a [fullName], a [email], a [phone] and a [password] 
+  /// Registers a `User` using a [fullName], a [email], a [phone] and a [password]
   /// by making an API call to the server.
   /// It is asynchronous and can throw an `APIException` if the statusCode is not 200.
-  Future<void> register({@required String fullName, @required String email,
-         @required String phone, @required String password}) async {
+  Future<void> register(
+      {@required String fullName,
+      @required String email,
+      @required String phone,
+      @required String password}) async {
     try {
-      await FirestoreHelper.addRecord('users', 
-       {
+      FirebaseUser fbUser = await _firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      authenticate(email: email, password: password);
+      
+      await _firestore.collection('users').document(fbUser.uid).setData( {
         'fullName': fullName,
-        'email': email,
-        'phone' : phone,
-        'password': password
+        'email': fbUser.email,
+        'phone': phone,
+        'uid': fbUser.uid,
       });
 
       _logger.finest('Registration is successful');
@@ -55,13 +67,14 @@ class DataAuthenticationRepository implements AuthenticationRepository {
   /// When successful, it attempts to save the credentials of the `User` to local storage by
   /// calling [_saveCredentials]. Throws an `Exception` if an Internet connection cannot be
   /// established. Throws a `ClientException` if the http object fails.
-  Future<void> authenticate({@required String email, @required String password}) async {
+  Future<void> authenticate(
+      {@required String email, @required String password}) async {
     try {
       // invoke http request to login and convert body to map
-      FirebaseUser firebaseUser = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email, password: password);
-        //await HttpHelper.invokeHttp(
-        //Constants.loginRoute, RequestType.post, body: {'email': email, 'password': password});
+      FirebaseUser firebaseUser = await _firebaseAuth
+          .signInWithEmailAndPassword(email: email, password: password);
+      //await HttpHelper.invokeHttp(
+      //Constants.loginRoute, RequestType.post, body: {'email': email, 'password': password});
       _logger.finest('Login Successful.');
 
       // convert json to User and save credentials in local storage
@@ -71,12 +84,10 @@ class DataAuthenticationRepository implements AuthenticationRepository {
         firebaseUser.email,
         firebaseUser.phoneNumber,
       );
-
       _saveCredentials(token: firebaseUser.uid, user: user);
-   
-    } catch(error) {
-        _logger.warning(error.message);
-        rethrow;
+    } catch (error) {
+      _logger.warning(error.message);
+      rethrow;
     }
   }
 
@@ -92,7 +103,8 @@ class DataAuthenticationRepository implements AuthenticationRepository {
   }
 
   Future<void> forgotPassword(String email) async {
-    Uri uri = Uri.http(Constants.baseUrlNoPrefix, Constants.forgotPasswordPath, {'email': email} );
+    Uri uri = Uri.http(Constants.baseUrlNoPrefix, Constants.forgotPasswordPath,
+        {'email': email});
 
     try {
       await HttpHelper.invokeHttp(uri, RequestType.get);
@@ -117,7 +129,8 @@ class DataAuthenticationRepository implements AuthenticationRepository {
   /// Returns the current authenticated `User` from `SharedPreferences`.
   Future<User> getCurrentUser() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    User user = User.fromJson(jsonDecode(preferences.getString(Constants.userKey)));
+    User user =
+        User.fromJson(jsonDecode(preferences.getString(Constants.userKey)));
     return user;
   }
 

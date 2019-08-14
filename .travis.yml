@@ -6,6 +6,7 @@ addons:
       - lib32stdc++6
 env:
   global:
+    - ANDROID_SDK_ROOT=/opt/android
     - FLUTTER_CHANNEL=stable
 install:
   - git clone https://github.com/flutter/flutter.git -b $FLUTTER_CHANNEL
